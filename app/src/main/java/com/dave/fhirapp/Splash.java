@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.dave.fhirapp.patient.add.MainActivity;
+import com.dave.fhirapp.patient.list_data.PatientList;
+
 public class Splash extends AppCompatActivity {
 
     Handler handler;
@@ -17,7 +20,7 @@ public class Splash extends AppCompatActivity {
 
         handler=new Handler();
         handler.postDelayed(() -> {
-            Intent intent=new Intent(Splash.this,MainActivity.class);
+            Intent intent=new Intent(Splash.this, PatientList.class);
             startActivity(intent);
             finish();
         },3000);

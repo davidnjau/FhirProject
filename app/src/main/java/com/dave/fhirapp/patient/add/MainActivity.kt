@@ -1,8 +1,8 @@
-package com.dave.fhirapp
+package com.dave.fhirapp.patient.add
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.dave.fhirapp.patient.FragmentAddPatient
+import com.dave.fhirapp.R
 
 class MainActivity : AppCompatActivity() {
 

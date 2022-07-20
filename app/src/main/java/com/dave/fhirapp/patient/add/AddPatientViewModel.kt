@@ -1,4 +1,4 @@
-package com.dave.fhirapp.patient
+package com.dave.fhirapp.patient.add
 
 import android.app.Application
 import android.util.Log
@@ -12,7 +12,6 @@ import com.dave.fhirapp.helper.FhirApplication
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.mapping.ResourceMapper
 import com.google.android.fhir.datacapture.validation.QuestionnaireResponseValidator
-import com.google.android.fhir.datacapture.validation.getSingleStringValidationMessage
 import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Questionnaire

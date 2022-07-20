@@ -1,4 +1,4 @@
-package com.dave.fhirapp.patient
+package com.dave.fhirapp.patient.add
 
 import android.os.Build
 import android.os.Bundle
@@ -37,7 +37,9 @@ class FragmentAddPatient : Fragment() {
 
         rootView.findViewById<Button>(R.id.btnSaveButton).setOnClickListener {
 
-            val questionnaireFragment = childFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as QuestionnaireFragment
+            val questionnaireFragment = childFragmentManager.findFragmentByTag(
+                QUESTIONNAIRE_FRAGMENT_TAG
+            ) as QuestionnaireFragment
             savePatient(questionnaireFragment.getQuestionnaireResponse())
 
             Log.e("*******4 ", "questionnaireResponse")
