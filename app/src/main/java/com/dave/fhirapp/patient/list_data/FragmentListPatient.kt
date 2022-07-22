@@ -60,13 +60,11 @@ class FragmentListPatient : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
-        fhirFormatterClass.liveSearchedPatients.observe(
-            viewLifecycleOwner, Observer {
-                Log.e("------", "------")
-                println(it)
-                showPatients(it)
-            }
-        )
+        fhirFormatterClass.liveSearchedPatients.observe(viewLifecycleOwner) {
+            Log.e("------", "------")
+            println(it)
+            showPatients(it)
+        }
 
         return rootView
     }

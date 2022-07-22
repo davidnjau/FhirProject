@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.dave.fhirapp.R
 import com.dave.fhirapp.helper.PatientItem
+import com.dave.fhirapp.patient.details.PatientDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -35,8 +36,11 @@ class PatientsAdapter(private var entryList: List<PatientItem>?,
         override fun onClick(p0: View) {
 
             val pos = adapterPosition
+            val id = entryList?.get(position)?.resourceId
 
-
+            val intent = Intent(context, PatientDetails::class.java)
+            intent.putExtra("patientId", id)
+            context.startActivity(intent)
 
         }
 

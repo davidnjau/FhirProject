@@ -52,46 +52,15 @@ class FhirFormatterClass (application: Application, private val fhirEngine: Fhir
             count = 100
             from = 0
 
-        }.mapIndexed { index, patient ->  patient.toPatientItem(index + 1)}
+        }.mapIndexed { index, patient ->
+            FormatterClass().patientData(patient, index + 1)}
             .let { patients.addAll(it) }
-
-        Log.e("+++++", "++++")
-        println(patients)
 
         return patients
     }
 
     private fun filterCity(search: Search) {
         search.filter(Patient.ADDRESS_CITY, { value = "NAIROBI" })
-    }
-
-    private fun Patient.toPatientItem(position: Int): PatientItem {
-        // Show nothing if no values available for gender and date of birth.
-        val patientId = if (hasIdElement()) idElement.idPart else ""
-        val name = if (hasName()) name[0].nameAsSingleString else ""
-        val gender = if (hasGenderElement()) genderElement.valueAsString else ""
-        val dob =
-            if (hasBirthDateElement())
-                LocalDate.parse(birthDateElement.valueAsString, DateTimeFormatter.ISO_DATE)
-            else null
-        val phone = if (hasTelecom()) telecom[0].value else ""
-        val city = if (hasAddress()) address[0].city else ""
-        val country = if (hasAddress()) address[0].country else ""
-        val isActive = active
-        val html: String = if (hasText()) text.div.valueAsString else ""
-
-        return PatientItem(
-            id = position.toString(),
-            resourceId = patientId,
-            name = name,
-            gender = gender ?: "",
-            dob = dob,
-            phone = phone ?: "",
-            city = city ?: "",
-            country = country ?: "",
-            isActive = isActive,
-            html = html
-        )
     }
 
     class FhirFormatterClassViewModelFactory(

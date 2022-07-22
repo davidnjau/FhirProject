@@ -22,6 +22,7 @@ class FhirApplication : Application (){
                 enableEncryptionIfSupported = true,
                 DatabaseErrorStrategy.RECREATE_AT_OPEN,
                 ServerConfiguration("https://hapi.fhir.org/baseR4/")
+//                ServerConfiguration("https://devhmis.intellisoftkenya.com/fhir/")
             )
         )
         Sync.oneTimeSync<FhirPeriodicSyncWorker>(this)

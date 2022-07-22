@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FhirApp"
         tools:targetApi="31">
         <activity
+            android:name=".patient.details.PatientDetails"
+            android:exported="false" />
+        <activity
             android:name=".patient.list_data.PatientList"
             android:exported="false" />
         <activity
