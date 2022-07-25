@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import ca.uhn.fhir.context.FhirContext
 import ca.uhn.fhir.context.FhirVersionEnum
 import com.dave.fhirapp.helper.FhirApplication
+import com.dave.fhirapp.helper.FormatterClass
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.mapping.ResourceMapper
 import com.google.android.fhir.datacapture.validation.QuestionnaireResponseValidator
@@ -56,7 +57,7 @@ class AddPatientViewModel(application: Application, private val state: SavedStat
             }
 
             val patient = entry.resource as Patient
-            patient.id = generateUuid()
+            patient.id = FormatterClass().generateUuid()
             fhirEngine.create(patient)
             isPatientSaved.value = true
         }
@@ -77,13 +78,9 @@ class AddPatientViewModel(application: Application, private val state: SavedStat
 
     }
 
-    private fun generateUuid():String{
-        return UUID.randomUUID().toString()
-    }
 
-    class Test{
 
-    }
+
 
 
 }

@@ -9,8 +9,8 @@ import java.util.*
 class DownloadWorkManagerImpl : DownloadWorkManager {
 
     private val resourceTypeList = ResourceType.values().map { it.name }
-    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI"))
-//    private val urls = LinkedList(listOf("Patient?address-state=KabarakHOSPITAL14"))
+//    private val urls = LinkedList(listOf("Patient?address-city=NAIROBI"))
+    private val urls = LinkedList(listOf("Patient?address-state=KabarakHOSPITAL14"))
 
 
     override suspend fun getNextRequestUrl(context: SyncDownloadContext): String? {

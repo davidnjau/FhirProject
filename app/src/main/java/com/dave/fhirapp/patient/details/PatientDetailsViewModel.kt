@@ -5,16 +5,19 @@ import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
+import ca.uhn.fhir.context.FhirContext
 import com.dave.fhirapp.R
 import com.dave.fhirapp.helper.*
 import com.google.android.fhir.FhirEngine
+import com.google.android.fhir.datacapture.mapping.ResourceMapper
 import com.google.android.fhir.get
 import com.google.android.fhir.logicalId
 import com.google.android.fhir.search.search
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.Encounter
-import org.hl7.fhir.r4.model.Observation
-import org.hl7.fhir.r4.model.Patient
+import org.hl7.fhir.r4.model.*
+import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class PatientDetailsViewModel(
@@ -35,6 +38,73 @@ class PatientDetailsViewModel(
         return FormatterClass().patientData(patient, 0)
     }
 
+
+
+//    fun createEncounter(
+//        patientReference: Reference,
+//        encounterReference: Reference,
+//        encounterId: String,
+//        questionnaireResponse: QuestionnaireResponse) {
+//
+//        viewModelScope.launch {
+//
+//            val bundle =
+//                ResourceMapper.extract(
+//                    questionnaireResource,
+//                    questionnaireResponse
+//                )
+//
+//            bundle.entry.forEach {
+//
+//
+//
+//
+////                when(val resource = it.resource) {
+////                    is Observation -> {
+////                        resource.resourceType = subjectReference
+////                        resource.id = UUID.randomUUID().toString()
+////                        resource.meta = Meta().apply {
+////                            versionId = UUID.randomUUID().toString()
+////                            lastUpdated = Date()
+////                        }
+////                        resource.code = CodeableConcept().apply {
+////                            coding = listOf(Coding().apply {
+////                                system = "http://loinc.org"
+////                                code = "8302-2"
+////                                display = "Vital signs"
+////                            })
+////                            text = "Questionnaire Response"
+////                        }
+////                        resource.subject = subjectReference
+////                        resource.encounter = Reference().apply {
+////                            reference = "Encounter/$encounterId"
+////                        }
+////                        resource.issued = Date()
+////                        resource.valueStringType = "string"
+////
+////                    }
+////                    is Encounter -> {
+////                        resource.subject = subjectReference
+////                        resource.id = encounterId
+////                        resource.reasonCodeFirstRep.text = reason
+////                        resource.reasonCodeFirstRep.codingFirstRep.code = reason
+////                        resource.status = Encounter.EncounterStatus.INPROGRESS
+////                        resource.partOf = basedOnReference
+////
+////                        saveResourceToDatabase(resource)
+////                    }
+////                }
+//
+//            }
+//
+//
+//        }
+
+
+    private suspend fun saveResourceToDatabase(resource: Resource) {
+        fhirEngine.create(resource)
+    }
+
     private suspend fun getPatientDetailDataModel():DbPatientRecord{
 
         val dbPatientRecord = DbPatientRecord()
@@ -48,11 +118,11 @@ class PatientDetailsViewModel(
         patient.let {
 
             val name = PatientProperty("Full name", it.name)
-            val dob = PatientProperty("Date of birth", it.dob.toString())
-            val gender = PatientProperty("Gender", it.gender)
-            val phone = PatientProperty("Phone", it.phone)
-            val city = PatientProperty("City", it.city)
-            val country = PatientProperty("Country", it.country)
+            val dob = PatientProperty("Date of birth", "it.dob.toString()")
+            val gender = PatientProperty("Gender", "it.gender")
+            val phone = PatientProperty("Phone", "it.phone")
+            val city = PatientProperty("City", "it.city")
+            val country = PatientProperty("Country", "it.country")
 
             patientDetailList.addAll(listOf(name, dob, gender, phone, city, country))
             val dbPatientData = DbPatientData(patientId, patientDetailList)

@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/layout/activity_patient_list.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_add_patient.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/layout/fragment_details_patient.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_list_patient.xml" value="0.2171875" />
         <entry key="app/src/main/res/layout/patient_list_item_view.xml" value="0.2798913043478261" />
       </map>

@@ -52,3 +52,14 @@ data class DbEncounter(
     val reasonCode: String,
     val observationList : List<ObservationItem>
 )
+data class CodingObservation(
+    val code: String,
+    val display: String,
+    val value: String,
+)
+data class QuantityObservation(
+    val code: String,
+    val display: String,
+    val value: String,
+    val unit: String,
+)

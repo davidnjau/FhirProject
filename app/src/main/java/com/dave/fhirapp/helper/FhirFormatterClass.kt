@@ -39,6 +39,8 @@ class FhirFormatterClass (application: Application, private val fhirEngine: Fhir
 
     private suspend fun getSearchResults(nameQuery: String = ""): List<PatientItem> {
         val patients: MutableList<PatientItem> = mutableListOf()
+
+
         fhirEngine.search<Patient> {
 
             if (nameQuery.isNotEmpty()){
@@ -48,19 +50,24 @@ class FhirFormatterClass (application: Application, private val fhirEngine: Fhir
                 })
             }
             filterCity(this)
-            sort(Patient.GIVEN, Order.ASCENDING)
+            sort(Patient.FAMILY, Order.ASCENDING)
             count = 100
             from = 0
 
         }.mapIndexed { index, patient ->
+
+
             FormatterClass().patientData(patient, index + 1)}
-            .let { patients.addAll(it) }
+            .let {
+
+                patients.addAll(it)
+            }
 
         return patients
     }
 
     private fun filterCity(search: Search) {
-        search.filter(Patient.ADDRESS_CITY, { value = "NAIROBI" })
+        search.filter(Patient.ADDRESS_STATE, { value = "KabarakHOSPITAL14" })
     }
 
     class FhirFormatterClassViewModelFactory(

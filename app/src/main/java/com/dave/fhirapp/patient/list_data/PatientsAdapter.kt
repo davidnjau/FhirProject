@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.dave.fhirapp.R
+import com.dave.fhirapp.helper.FormatterClass
 import com.dave.fhirapp.helper.PatientItem
 import com.dave.fhirapp.patient.details.PatientDetails
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +38,8 @@ class PatientsAdapter(private var entryList: List<PatientItem>?,
 
             val pos = adapterPosition
             val id = entryList?.get(position)?.resourceId
+
+            FormatterClass().saveSharedPreference(context, "patientId", id.toString())
 
             val intent = Intent(context, PatientDetails::class.java)
             intent.putExtra("patientId", id)

@@ -7,7 +7,14 @@
     android:orientation="vertical"
     tools:context=".patient.details.PatientDetails">
 
+    <FrameLayout
+        android:id="@+id/fragmentHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
     <TextView
+        android:visibility="gone"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:text="Patient Details"
         android:textStyle="bold"
@@ -15,11 +22,14 @@
         android:layout_height="wrap_content"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tvPatientData"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:text="Patient Data "
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+
 
 
 </LinearLayout>

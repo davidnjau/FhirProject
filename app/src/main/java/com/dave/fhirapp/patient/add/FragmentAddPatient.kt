@@ -49,6 +49,8 @@ class FragmentAddPatient : Fragment() {
 
         observePatientSaveAction()
 
+
+
         return rootView
     }
 
@@ -90,5 +92,6 @@ class FragmentAddPatient : Fragment() {
         const val QUESTIONNAIRE_FILE_PATH_KEY = "questionnaire-file-path-key"
         const val QUESTIONNAIRE_FRAGMENT_TAG = "questionnaire-fragment-tag"
     }
+
 
 }
