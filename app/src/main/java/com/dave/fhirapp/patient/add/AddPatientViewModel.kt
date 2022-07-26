@@ -14,10 +14,12 @@ import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.mapping.ResourceMapper
 import com.google.android.fhir.datacapture.validation.QuestionnaireResponseValidator
 import kotlinx.coroutines.launch
+import org.hl7.fhir.r4.model.Address
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddPatientViewModel(application: Application, private val state: SavedStateHandle) :AndroidViewModel(application){
 
@@ -33,17 +35,12 @@ class AddPatientViewModel(application: Application, private val state: SavedStat
     private var questionnaireJson : String? = null
 
     fun savePatient(questionnaireResponse: QuestionnaireResponse){
-        Log.e("******* ", "questionnaireResponse")
-        println(questionnaireResponse)
 
         viewModelScope.launch {
             if (QuestionnaireResponseValidator.validateQuestionnaireResponse(
                     questionnaireResource, questionnaireResponse, getApplication())
                     .values.flatten().any{
-                        Log.e("*******2 ", "questionnaireResponse")
-                        println(it)
-                        !it.isValid})
-            {
+                        !it.isValid}) {
 
 
                 isPatientSaved.value = false
@@ -57,8 +54,19 @@ class AddPatientViewModel(application: Application, private val state: SavedStat
             }
 
             val patient = entry.resource as Patient
+
+            val addressList = ArrayList<Address>()
+            val address = Address()
+            address.state = "KabarakHOSPITAL15"
+            address.city = "Kabarak"
+            addressList.add(address)
+
+            patient.address = addressList
+
             patient.id = FormatterClass().generateUuid()
             fhirEngine.create(patient)
+
+
             isPatientSaved.value = true
         }
 

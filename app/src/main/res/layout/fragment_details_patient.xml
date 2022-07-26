@@ -14,6 +14,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:textStyle="bold"
+        android:text="Patient Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txtPatientName"
+        android:text="Patient Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:text="Patient Encounters and Observations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tvEncounters"
+        android:text="Patient Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:visibility="gone"
         android:id="@+id/add_patient_container"

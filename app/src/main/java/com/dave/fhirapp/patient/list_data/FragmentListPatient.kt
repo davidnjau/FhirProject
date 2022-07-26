@@ -1,5 +1,6 @@
 package com.dave.fhirapp.patient.list_data
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import com.dave.fhirapp.R
 import com.dave.fhirapp.helper.FhirApplication
 import com.dave.fhirapp.helper.FhirFormatterClass
 import com.dave.fhirapp.helper.PatientItem
+import com.dave.fhirapp.patient.add.MainActivity
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import org.hl7.fhir.r4.model.QuestionnaireResponse
@@ -61,9 +63,12 @@ class FragmentListPatient : Fragment() {
         recyclerView.setHasFixedSize(true)
 
         fhirFormatterClass.liveSearchedPatients.observe(viewLifecycleOwner) {
-            Log.e("------", "------")
-            println(it)
+
             showPatients(it)
+        }
+
+        rootView.findViewById<Button>(R.id.btnAddPatient).setOnClickListener {
+            startActivity(Intent(requireContext(), MainActivity::class.java))
         }
 
         return rootView

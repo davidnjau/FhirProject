@@ -67,7 +67,7 @@ class FhirFormatterClass (application: Application, private val fhirEngine: Fhir
     }
 
     private fun filterCity(search: Search) {
-        search.filter(Patient.ADDRESS_STATE, { value = "KabarakHOSPITAL14" })
+        search.filter(Patient.ADDRESS_STATE, { value = "KabarakHOSPITAL15" })
     }
 
     class FhirFormatterClassViewModelFactory(

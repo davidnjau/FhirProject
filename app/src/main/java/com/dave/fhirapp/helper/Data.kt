@@ -29,6 +29,7 @@ data class PatientProperty(val header: String, val value: String)
 
 data class EncounterItem(
     val id: String,
+    val text: String,
     val lastUpdated: String,
     val reasonCode: String
 )
@@ -37,17 +38,19 @@ data class EncounterItem(
 data class ObservationItem(
     val id: String,
     val code: String,
-    val value: String
+    val text: String,
+    val value: String,
 ) {
     override fun toString(): String = code
 }
 
 data class DbPatientRecord(
     var dbPatientData: DbPatientData? = null,
-    var dbEncounterList: List<DbEncounter>? = null,
+    var dbEncounterList: List<DbEncounter> = ArrayList(),
 )
 data class DbEncounter(
     val id: String,
+    val text: String,
     val lastUpdated: String,
     val reasonCode: String,
     val observationList : List<ObservationItem>

@@ -42,8 +42,6 @@ class FragmentAddPatient : Fragment() {
             ) as QuestionnaireFragment
             savePatient(questionnaireFragment.getQuestionnaireResponse())
 
-            Log.e("*******4 ", "questionnaireResponse")
-            println(questionnaireFragment.getQuestionnaireResponse())
         }
 
 
@@ -55,9 +53,6 @@ class FragmentAddPatient : Fragment() {
     }
 
     private fun savePatient(questionnaireResponse: QuestionnaireResponse) {
-
-        Log.e("*******3 ", "questionnaireResponse")
-        println(questionnaireResponse)
 
         viewModel.savePatient(questionnaireResponse)
 

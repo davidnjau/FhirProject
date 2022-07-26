@@ -26,7 +26,7 @@ class FormatterClass {
         // Show nothing if no values available for gender and date of birth.
         val patientId = if (hasIdElement()) idElement.idPart else ""
 
-        Log.e("------", patientId)
+//        Log.e("------", patientId)
 
         val name = if (hasName()) name[0].nameAsSingleString else ""
         val gender = if (hasGenderElement()) genderElement.valueAsString else ""
