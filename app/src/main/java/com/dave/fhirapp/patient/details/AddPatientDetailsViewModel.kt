@@ -103,7 +103,7 @@ class AddPatientDetailsViewModel(application: Application, private val state: Sa
                     )
                     .request.url = "Observation"
 
-                Log.e("-----1 ", dataCodeList.toString())
+                Log.e("-----1 Obse ", dataCodeList.toString())
             }
             dataQuantityList.forEach {
                 bundle.addEntry()
@@ -117,7 +117,7 @@ class AddPatientDetailsViewModel(application: Application, private val state: Sa
                         )
                     )
                     .request.url = "Observation"
-                Log.e("-----2 ", dataQuantityList.toString())
+                Log.e("-----2 Obse ", dataQuantityList.toString())
             }
 
             saveResources(bundle, patientReference, encounterId, encounterReason)

@@ -47,6 +47,7 @@ class FragmentPatientDetails : Fragment() {
 
     private lateinit var txtPatientName: TextView
     private lateinit var tvEncounters: TextView
+    private lateinit var etEncounterName: EditText
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -60,6 +61,7 @@ class FragmentPatientDetails : Fragment() {
 
         txtPatientName = rootView.findViewById(R.id.txtPatientName)
         tvEncounters = rootView.findViewById(R.id.tvEncounters)
+        etEncounterName = rootView.findViewById(R.id.etEncounterName)
 
         patientDetailsViewModel = ViewModelProvider(this,
             PatientDetailsViewModel.PatientDetailsViewModelFactory(requireContext().applicationContext as Application,fhirEngine, patientId)
@@ -127,7 +129,7 @@ class FragmentPatientDetails : Fragment() {
 
                     }
 
-                    encounterData = "$encounterData$encounterText\n\n Observations: $observationData\n"
+                    encounterData = "## $encounterData$encounterText\n\n Observations: $observationData\n"
 
                 }
 
@@ -148,39 +150,15 @@ class FragmentPatientDetails : Fragment() {
 
     private fun showDialog(){
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Add Encounter")
 
-        val input = EditText(requireContext())
-        input.hint = "Enter Encounter Name"
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-
-        val observationCode = EditText(requireContext())
-        observationCode.hint = "Enter Observation Code"
-        observationCode.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(observationCode)
-
-        val observationDisplay = EditText(requireContext())
-        observationDisplay.hint = "Enter Observation Display"
-        observationDisplay.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(observationDisplay)
-
-        val observationValue = EditText(requireContext())
-        observationValue.hint = "Enter Observation Value"
-        observationValue.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(observationValue)
-
+        builder.setTitle("Save Encounter")
+        builder.setMessage("Save Encounter Name")
 
         builder.setPositiveButton("OK") { dialog, which ->
             // Here you get get input text from the Edittext
-            var txtEncounterName = input.text.toString()
-            var txtCode = observationCode.text.toString()
-            var txtDisplay = observationDisplay.text.toString()
-            var txtValue = observationValue.text.toString()
+            var txtEncounterName = etEncounterName.text.toString()
 
-            val editTextList = listOf(input, observationCode, observationDisplay, observationValue)
-
-            if (validateValue(editTextList)){
+            if (!TextUtils.isEmpty(txtEncounterName)){
 
                 CoroutineScope(Dispatchers.IO).launch {
 
@@ -192,12 +170,12 @@ class FragmentPatientDetails : Fragment() {
                     val questionnaireResponse = questionnaireFragment.getQuestionnaireResponse()
 
                     val dataQuantityList = ArrayList<QuantityObservation>()
-                    val quantityObservation = QuantityObservation(
-                        txtCode,
-                        txtDisplay,
-                        txtValue,
-                        "g")
-                    dataQuantityList.add(quantityObservation)
+//                    val quantityObservation = QuantityObservation(
+//                        txtCode,
+//                        txtDisplay,
+//                        txtValue,
+//                        "g")
+//                    dataQuantityList.add(quantityObservation)
 
                     val dataCodeList = ArrayList<CodingObservation>()
 
@@ -216,6 +194,8 @@ class FragmentPatientDetails : Fragment() {
                 }
 
 
+            }else{
+                Toast.makeText(requireContext(), "Please enter encounter name", Toast.LENGTH_SHORT).show()
             }
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }

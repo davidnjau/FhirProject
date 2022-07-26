@@ -11,6 +11,7 @@ import com.dave.fhirapp.helper.*
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.get
 import com.google.android.fhir.logicalId
+import com.google.android.fhir.search.Order
 import com.google.android.fhir.search.search
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -118,7 +119,12 @@ class PatientDetailsViewModel(
 
         val observations = mutableListOf<ObservationItem>()
         fhirEngine
-            .search<Observation> { "Encounter/$encounterId/'$'everything"}
+            .search<Observation> {
+                filter(
+                    Observation.ENCOUNTER,
+                    {value = "Encounter/$encounterId"}
+                )
+            }
             .take(Int.MAX_VALUE)
             .map { createObservationItem(it, getApplication<Application>().resources) }
             .let { observations.addAll(it) }
@@ -132,9 +138,16 @@ class PatientDetailsViewModel(
         val encounter = mutableListOf<EncounterItem>()
 
         fhirEngine
-            .search<Encounter> { "Encounter/?patient=$patientId"}
+            .search<Encounter> {
+                filter(Encounter.SUBJECT, { value = "Patient/$patientId" })
+                sort(Encounter.DATE, Order.DESCENDING)
+            }
             .map { createEncounterItem(it, getApplication<Application>().resources) }
             .let { encounter.addAll(it) }
+
+        Log.e("******* ", "*******")
+        println("--patientId--$patientId")
+        println(encounter)
 
         return encounter
     }
