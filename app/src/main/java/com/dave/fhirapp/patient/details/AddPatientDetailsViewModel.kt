@@ -76,6 +76,87 @@ class AddPatientDetailsViewModel(application: Application, private val state: Sa
 
     }
 
+    fun updateEncounter(
+        patientReference: Reference,
+        encounterId: String,
+        questionnaireResponse: QuestionnaireResponse,
+        dataCodeList: ArrayList<CodingObservation>,
+        dataQuantityList: ArrayList<QuantityObservation>,
+    ){
+
+        viewModelScope.launch {
+            val bundle =
+                ResourceMapper.extract(
+                    questionnaireResource,
+                    questionnaireResponse)
+
+            val questionnaireHelper = QuestionnaireHelper()
+            dataCodeList.forEach {
+                bundle.addEntry()
+                    .setResource(
+                        questionnaireHelper.codingQuestionnaire(
+                            it.code,
+                            it.display,
+                            it.value
+                        )
+                    )
+                    .request.url = "Observation"
+
+                Log.e("-----1 Obse ", dataCodeList.toString())
+            }
+            dataQuantityList.forEach {
+                bundle.addEntry()
+                    .setResource(
+                        questionnaireHelper.quantityQuestionnaire(
+                            it.code,
+                            it.display,
+                            it.display,
+                            it.value,
+                            it.unit,
+                        )
+                    )
+                    .request.url = "Observation"
+                Log.e("-----2 Obse ", dataQuantityList.toString())
+            }
+
+            updateEncounterResource(
+                patientReference,
+                encounterId,
+                bundle
+            )
+
+
+
+        }
+
+    }
+
+    private suspend fun updateEncounterResource(
+        patientReference: Reference,
+        encounterId: String,
+        bundle: Bundle
+    ) {
+
+        val encounterReference = Reference("Encounter/$encounterId")
+
+        bundle.entry.forEach {
+            when (val resource = it.resource) {
+                is Observation -> {
+                    if (resource.hasCode()) {
+                        resource.id = FormatterClass().generateUuid()
+                        resource.subject = patientReference
+                        resource.encounter = encounterReference
+                        resource.issued = Date()
+                        saveResourceToDatabase(resource)
+                    }
+                }
+
+
+            }
+        }
+    }
+
+
     fun createEncounter(
         patientReference: Reference,
         encounterId: String,
@@ -135,8 +216,6 @@ class AddPatientDetailsViewModel(application: Application, private val state: Sa
 
         val encounterReference = Reference("Encounter/$encounterId")
 
-        Log.e("**** ", reason)
-
         bundle.entry.forEach {
             when (val resource = it.resource) {
                 is Observation -> {
@@ -163,8 +242,11 @@ class AddPatientDetailsViewModel(application: Application, private val state: Sa
 
     private suspend fun saveResourceToDatabase(resource: Resource) {
         val saved = fhirEngine.create(resource)
-        Log.e("-----4 ", saved.toString())
-        Log.e("-----5 ", resource.toString())
+        Log.e("**** ", saved.toString())
+
+    }
+    private suspend fun updateResourceToDatabase(resource: Resource) {
+        val update = fhirEngine.create(resource)
     }
 
 

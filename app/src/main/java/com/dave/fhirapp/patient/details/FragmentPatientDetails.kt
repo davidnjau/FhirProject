@@ -3,9 +3,7 @@ package com.dave.fhirapp.patient.details
 import android.app.Application
 import android.os.Build
 import android.os.Bundle
-import android.text.InputType
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,18 +18,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dave.fhirapp.R
 import com.dave.fhirapp.helper.CodingObservation
 import com.dave.fhirapp.helper.FhirApplication
 import com.dave.fhirapp.helper.FormatterClass
 import com.dave.fhirapp.helper.QuantityObservation
-import com.dave.fhirapp.patient.add.AddPatientViewModel
+import com.dave.fhirapp.patient.details.encounter.EncounterAdapter
 import com.google.android.fhir.FhirEngine
 import com.google.android.fhir.datacapture.QuestionnaireFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.hl7.fhir.r4.model.Reference
 
 class FragmentPatientDetails : Fragment() {
@@ -48,6 +47,9 @@ class FragmentPatientDetails : Fragment() {
     private lateinit var txtPatientName: TextView
     private lateinit var tvEncounters: TextView
     private lateinit var etEncounterName: EditText
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -76,6 +78,15 @@ class FragmentPatientDetails : Fragment() {
         rootView.findViewById<Button>(R.id.btnAddEncounter).setOnClickListener {
             showDialog()
         }
+
+        recyclerView = rootView.findViewById(R.id.encounter_list);
+        layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
 
         return rootView
     }
@@ -109,34 +120,39 @@ class FragmentPatientDetails : Fragment() {
                 }
 
                 val encounterList = patientRecord.dbEncounterList
-                var encounterData = ""
 
-                encounterList.forEach {
 
-                    val reasonCode = it.reasonCode
-                    val encounterText = it.text
-                    val observationList = it.observationList
-                    var observationData = ""
 
-//                    Log.e("----- ", encounterText)
-
-                    observationList.forEach { observation ->
-
-                        val text = observation.text
-                        val value = observation.value
-
-                        observationData = "$observationData$text: $value\n"
-
-                    }
-
-                    encounterData = "## $encounterData$encounterText\n\n Observations: $observationData\n"
-
-                }
+//                var encounterData = ""
+//
+//                encounterList.forEach {
+//
+//                    val reasonCode = it.reasonCode
+//                    val encounterText = it.text
+//                    val observationList = it.observationList
+//                    var observationData = ""
+//
+////                    Log.e("----- ", encounterText)
+//
+//                    observationList.forEach { observation ->
+//
+//                        val text = observation.text
+//                        val value = observation.value
+//
+//                        observationData = "$observationData$text: $value\n"
+//
+//                    }
+//
+//                    encounterData = "## $encounterData$encounterText\n\n Observations: $observationData\n"
+//
+//                }
 
 
                 CoroutineScope(Dispatchers.Main).launch {
                     txtPatientName.text = headerData
-                    tvEncounters.text = encounterData
+//                    tvEncounters.text = encounterData
+                    val configurationListingAdapter = EncounterAdapter(encounterList,requireContext())
+                    recyclerView.adapter = configurationListingAdapter
                 }
 
             }

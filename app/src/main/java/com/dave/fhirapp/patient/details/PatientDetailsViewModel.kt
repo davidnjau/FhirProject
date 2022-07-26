@@ -46,6 +46,10 @@ class PatientDetailsViewModel(
         getPatientDetailDataModel()
     }
 
+    fun getObservationsEncounter(encounterId: String) = runBlocking{
+        getPatientObservations(encounterId)
+    }
+
     private suspend fun getPatient(): PatientItem {
 
         val patient = getPatientResource()
@@ -115,8 +119,6 @@ class PatientDetailsViewModel(
     //Get all observations for patient under the selected encounter
     private suspend fun getPatientObservations(encounterId: String): List<ObservationItem> {
 
-        Log.e("encounterId",encounterId)
-
         val observations = mutableListOf<ObservationItem>()
         fhirEngine
             .search<Observation> {
@@ -184,11 +186,11 @@ class PatientDetailsViewModel(
                 }
             val valueString = "$value $valueUnit"
 
-            Log.e("*_*_*_*_*","--------")
-            Log.e("1",id)
-            Log.e("2",code)
-            Log.e("3",text)
-            Log.e("4",valueString)
+//            Log.e("*_*_*_*_*","--------")
+//            Log.e("1",id)
+//            Log.e("2",code)
+//            Log.e("3",text)
+//            Log.e("4",valueString)
 
             return ObservationItem(
                 id,
@@ -219,15 +221,21 @@ class PatientDetailsViewModel(
 
             var textValue = ""
 
-            val text = encounter.reasonCode[0].text
-            val textString = encounter.reasonCode[0].text?.toString() ?: ""
-            val textStringValue = encounter.reasonCode[0].coding[0].code ?: ""
+            if(encounter.reasonCode.size > 0){
 
-            textValue = if (textString != "") {
-                textString
-            }else if (textStringValue != ""){
-                textStringValue
-            }else text ?: ""
+                val text = encounter.reasonCode[0].text
+                val textString = encounter.reasonCode[0].text?.toString() ?: ""
+                val textStringValue = encounter.reasonCode[0].coding[0].code ?: ""
+
+                textValue = if (textString != "") {
+                    textString
+                }else if (textStringValue != ""){
+                    textStringValue
+                }else text ?: ""
+
+            }
+
+
 
             return EncounterItem(
                 encounter.logicalId,
